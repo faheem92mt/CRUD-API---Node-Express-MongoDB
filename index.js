@@ -5,7 +5,7 @@ const Product = require('./models/product.model.js');
 
 const mongoose = require('mongoose');
 
-
+// middleware
 app.use(express.json());
 
 app.get('/', (req,res)=> {
