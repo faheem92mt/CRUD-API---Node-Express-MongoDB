@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 app.use(express.json());
 
 app.get('/', (req,res)=> {
-    res.send('hey');
+    res.send('heyo');
 })
 
 app.post('/api/products', (req, res) => {
