@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 // middleware
 app.use(express.json());
 
+
 app.get('/', (req,res)=> {
     res.send('heyo');
 })
