@@ -9,11 +9,12 @@ const mongoose = require('mongoose');
 // we have to use middleware - we have to configure it
 app.use(express.json());
 
-
+// homepage
 app.get('/', (req,res)=> {
     res.send('heyo');
 })
 
+// create products
 app.post('/api/products', async (req, res) => {
     // console.log(req.body);
     // res.send(req.body);
@@ -25,6 +26,7 @@ app.post('/api/products', async (req, res) => {
     }
 });
 
+// get all products
 app.get('/api/products', async (req, res) => {
     try{
         const products = await Product.find({});
@@ -34,10 +36,26 @@ app.get('/api/products', async (req, res) => {
     }
 })
 
+// get each product by id
+app.get('/api/products/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
+        const product = await Product.findById(id);
+        res.status(200).json(product);
+    } catch (error) {
+        
+    }
+})
+
+
+
+
+// server listening
 app.listen(3000, ()=> {
     console.log('server is running on port 3000');
 });
 
+// mongoose database connection
 mongoose.connect("mongodb+srv://faheemibnhabib:whoneedsthis@shawarma.3oipfzz.mongodb.net/MyShawarmaNode-API?retryWrites=true&w=majority&appName=Shawarma")
 .then(()=> {
     console.log("connected to db!");
