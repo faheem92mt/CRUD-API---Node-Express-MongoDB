@@ -47,7 +47,28 @@ app.get('/api/products/:id', async (req, res) => {
     }
 })
 
+// update an existing product by id
+app.put('/api/products/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
+        // UPDATING
+        const product = await Product.findByIdAndUpdate(id, req.body);
 
+        if (!product) {
+            return res.status(404).json({message: "Product not found"});
+        }
+
+        // GETTING THE UPDATED PRODUCT
+        const updatedProduct = await Product.findById(id);
+        // AND DISPLAYING IT
+        res.status(200).json(updatedProduct);
+
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+})
+
+// delete a product
 
 
 // server listening
