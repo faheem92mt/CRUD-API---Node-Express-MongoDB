@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 
+// schema
 const Product = require('./models/product.model.js');
 
 const mongoose = require('mongoose');
@@ -36,14 +37,15 @@ app.get('/api/products', async (req, res) => {
     }
 })
 
-// get each product by id
+// get each product by id   
 app.get('/api/products/:id', async (req, res) => {
     try {
         const {id} = req.params;
         const product = await Product.findById(id);
+        
         res.status(200).json(product);
     } catch (error) {
-        
+        res.status(500).json({message: error.message});
     }
 })
 
@@ -68,16 +70,34 @@ app.put('/api/products/:id', async (req, res) => {
     }
 })
 
-// delete a product
+// delete a product 
+app.delete('/api/products/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
 
+        const product = await Product.findByIdAndDelete(id);
+        console.log(product);
+
+        if(!product) {
+            return res.status(404).json({message: "Product not found"});
+        }
+
+        res.status(200).json({message: "Product deleted successfully!"});
+
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
 
 // server listening
 app.listen(3000, ()=> {
     console.log('server is running on port 3000');
 });
 
+
 // mongoose database connection
-mongoose.connect("mongodb+srv://faheemibnhabib:whoneedsthis@shawarma.3oipfzz.mongodb.net/MyShawarmaNode-API?retryWrites=true&w=majority&appName=Shawarma")
+const connectionString = "mongodb+srv://faheemibnhabib:whoneedsthis@shawarma.3oipfzz.mongodb.net/MyShawarmaNode-API?retryWrites=true&w=majority&appName=Shawarma"
+mongoose.connect(connectionString)
 .then(()=> {
     console.log("connected to db!");
 })
